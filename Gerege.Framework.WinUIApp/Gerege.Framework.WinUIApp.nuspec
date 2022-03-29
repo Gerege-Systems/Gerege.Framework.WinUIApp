@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+	<metadata>
+		<id>$id$</id>
+		<version>$version$</version>
+		<title>$title$</title>
+		<authors>$authors$</authors>
+		<projectUrl>https://github.com/Gerege-Systems/Gerege.Framework.WinUIApp</projectUrl>
+		<readme>README.md</readme>
+		<icon>gerege-icon.png</icon>
+		<description>$description$</description>
+		<copyright>$copyright$</copyright>
+		<tags>gerege;framework;winui;uwp;xaml;application</tags>
+		<dependencies>
+			<dependency id="Microsoft.WindowsAppSDK" version="1.0.1" />
+		</dependencies>
+	</metadata>
+	<files>
+		<file src=".\README.md" target="\" />
+		<file src="$targetdir$..\..\..\..\gerege-icon.png" target="" />
+	</files>
+</package>
