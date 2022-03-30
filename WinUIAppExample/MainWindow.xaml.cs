@@ -1,4 +1,9 @@
-﻿using Microsoft.UI.Xaml;
+﻿using System;
+using System.Diagnostics;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+
+using SampleApp;
 
 namespace WinUIAppExample
 {
@@ -10,6 +15,79 @@ namespace WinUIAppExample
         public MainWindow()
         {
             InitializeComponent();
+
+            this.App().EventHandler += GeregEventHandler;
+
+            this.AppRaiseEvent("trigger-client-login");
+        }
+
+        /// <summary>
+        /// Апп дээр идэвхижсэн үзэгдлүүдийг хүлээн авч ажиллуулах.
+        /// </summary>
+        /// <param name="event">Идэвхжсэн үзэгдэл.</param>
+        /// <param name="param">Үзэгдэлд дамжуулагдсан өгөгдөл.</param>
+        /// <returns>
+        /// Үзэгдэл хүлээн авагчтай бол боловсруулсан үр дүнг dynamic төрлөөр буцаана, үгүй бол null утга буцна.
+        /// </returns>
+        public dynamic? GeregEventHandler(string @event, dynamic? param = null)
+        {
+            Debug.WriteLine("Gerege үзэгдэл дуудагдаж байна => " + @event);
+
+            return @event switch
+            {
+                "trigger-client-login" => OnTriggerClientLogin(),
+                "client-login" => OnClientLogin(),
+                "load-home" => OnLoadHome(),
+                "load-page" => OnLoadPage(param),
+
+                _ => null,
+            };
+        }
+
+        /// <summary>
+        /// Апп дээр үндсэн хэрэглэгч нэвтрэхийг шаардах үед энэ функц ажиллана.
+        /// </summary>
+        public dynamic? OnTriggerClientLogin()
+        {
+            MainFrame.Navigate(typeof(ClientLogin));
+
+            return null;
+        }
+
+        /// <summary>
+        /// Апп дээр үндсэн хэрэглэгч амжилттай нэвтрэх үед энэ функц ажиллана.
+        /// </summary>
+        public dynamic? OnClientLogin()
+        {
+            return this.AppRaiseEvent("load-home");
+        }
+
+        /// <summary>
+        /// Нүүр хуудасруу шилжихийг хүсэх үед энэ функц ажиллана.
+        /// </summary>
+        public dynamic? OnLoadHome()
+        {
+            MainFrame.Navigate(typeof(HomePage));
+
+            return null;
+        }
+
+        /// <summary>
+        /// Модулиас уншсан Page рүү шилжих.
+        /// </summary>
+        /// <param name="param">Page обьект.</param>
+        public dynamic? OnLoadPage(dynamic param)
+        {
+            try
+            {
+                MainFrame.Navigate(((Page)param).GetType());
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            return null;
         }
     }
 }

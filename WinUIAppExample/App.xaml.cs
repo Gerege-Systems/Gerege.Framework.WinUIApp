@@ -9,7 +9,7 @@ namespace WinUIAppExample
     /// Gerege Application Development Framework V5
     /// </project>
 
-    public partial class App : Application
+    public partial class App : SampleApp.SampleApp
     {
         public App()
         {
