@@ -40,7 +40,7 @@ namespace SampleApp
         /// </summary>
         /// <param name="a">Өргөтгөлийг ашиглаж буй объект.</param>
         /// <returns>
-        /// GeregeApplication-аас удамшсан ачаалагдсан апп SampleApp объектыг буцаана.
+        /// GeregeWinUIApp-аас удамшсан ачаалагдсан апп SampleApp объектыг буцаана.
         /// </returns>
         public static SampleApp App(this object a)
         {
