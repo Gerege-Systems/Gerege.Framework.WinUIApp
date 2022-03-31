@@ -10,7 +10,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Loaded="Grid_Loaded">
-        <Button Content="Back to home" HorizontalAlignment="Left" Margin="22,10,0,0" VerticalAlignment="Top" Width="151" Height="23" Click="Button_Click"/>
+        <Button Content="Back to home" HorizontalAlignment="Left" Margin="22,10,0,0" VerticalAlignment="Top" Width="151" Height="32" Click="Button_Click"/>
         <TextBox x:Name="TitleBox" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Text="Fetching partners list from server ..." VerticalAlignment="Top" Width="550" Margin="0,62,0,0"/>
         <StackPanel Orientation="Horizontal" Name="PartnersPanel" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Width="550" Height="300">
         </StackPanel>

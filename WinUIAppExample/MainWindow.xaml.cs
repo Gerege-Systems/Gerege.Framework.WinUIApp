@@ -17,7 +17,6 @@ namespace WinUIAppExample
             InitializeComponent();
 
             this.App().EventHandler += GeregEventHandler;
-
             this.AppRaiseEvent("trigger-client-login");
         }
 
@@ -67,6 +66,9 @@ namespace WinUIAppExample
         /// </summary>
         public dynamic? OnLoadHome()
         {
+            MainGrid.Children.Clear();
+            MainGrid.Children.Add(MainFrame);
+
             MainFrame.Navigate(typeof(HomePage));
 
             return null;
@@ -80,7 +82,8 @@ namespace WinUIAppExample
         {
             try
             {
-                MainFrame.Navigate(((Page)param).GetType());
+                MainGrid.Children.Clear();
+                MainGrid.Children.Add((Page)param);
             }
             catch (Exception ex)
             {

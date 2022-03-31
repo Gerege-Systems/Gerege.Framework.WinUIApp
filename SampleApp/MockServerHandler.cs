@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -6,8 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Newtonsoft.Json;
-
-using Gerege.Framework.FileSystem;
 
 namespace SampleApp
 {
@@ -24,7 +23,7 @@ namespace SampleApp
         {            
             try
             {
-                Thread.Sleep(2000); // Интернетээр хандаж буй мэт сэтгэгдэл төрүүлэх үүднээс 2 хором хүлээлгэе
+                Thread.Sleep(300); // Интернетээр хандаж буй мэт сэтгэгдэл төрүүлэх үүднээс хором хүлээлгэе
 
                 string? requestTarget = request.RequestUri?.ToString();
                 if (requestTarget != this.AppRaiseEvent("get-server-address"))
@@ -89,7 +88,7 @@ namespace SampleApp
                     code = 200,
                     status = "success",
                     message = "",
-                    result = Media.LoadEmbeddedJson(typeof(MockServerHandler).Namespace + ".gerege_partners.json", Assembly.GetExecutingAssembly())
+                    result = LoadEmbeddedJson("gerege_partners.json")
                 }),
                 _ => throw new Exception(message_code + ": Message code not found"),
             };
@@ -117,6 +116,24 @@ namespace SampleApp
                     expires = DateTime.Now.AddMinutes(5).ToString("yyyy-MM-dd H:mm:ss")
                 }
             });
+        }
+
+        private dynamic? LoadEmbeddedJson(string szFilePath)
+        {
+            try
+            {
+                var assembly = Assembly.GetExecutingAssembly();
+                using var stream = assembly.GetManifestResourceStream(typeof(MockServerHandler).Namespace + "." + szFilePath);
+                if (stream == null)
+                    throw new FileNotFoundException(assembly.GetName().Name + " дотор " + szFilePath + " гэсэн файл байхгүй л байна даа!");
+
+                using StreamReader reader = new StreamReader(stream);
+                return JsonConvert.DeserializeObject(reader.ReadToEnd());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

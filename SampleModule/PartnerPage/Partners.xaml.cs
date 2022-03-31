@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
@@ -50,70 +50,55 @@ namespace SampleModule.PartnerPage
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            new Thread(GetPartners).Start();
-        }
-        
-        private void GetPartners()
-        {
-            string title = "";
-            PartnerList partnerList = new();
             try
             {
-                partnerList = this.UserRequest<PartnerList>();
-                title = "Successfully retrieved partners list.";
+                PartnersPanel.Children.Clear();
+
+                PartnerList list = this.UserRequest<PartnerList>();
+                foreach (Partner partner in list.Data)
+                {
+                    Border border = new Border
+                    {
+                        Tag = partner.WebAddress,
+                        Margin = new Thickness(20, 0, 0, 0),
+                        VerticalAlignment = VerticalAlignment.Top
+                    };
+                    border.PointerPressed += MenuItemClick;
+
+                    try
+                    {
+                        BitmapImage? logoImg = (BitmapImage?)(object)new BitmapImage(new Uri(
+                            this.App().CurrentDirectory + "PartnerPage" + Path.DirectorySeparatorChar + partner.Logo));
+                        border.Background = new ImageBrush { ImageSource = logoImg };
+                    }
+                    catch { }
+
+
+                    border.Width = 127;
+                    border.Height = 127;
+
+                    border.Child = new TextBlock
+                    {
+                        Height = 40,
+                        FontSize = 14,
+                        Text = partner.Name,
+                        TextWrapping = TextWrapping.Wrap,
+                        TextAlignment = TextAlignment.Center,
+                        Margin = new Thickness(0, 0, 0, -45),
+                        FontFamily = new FontFamily("Montserrat"),
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        HorizontalAlignment = HorizontalAlignment.Center
+                    };
+
+                    PartnersPanel.Children.Add(border);
+                }
+
+                TitleBox.Text = "Successfully retrieved partners list.";
             }
             catch (Exception ex)
             {
+                TitleBox.Text = ex.Message;
                 Debug.WriteLine("Error on fetching data -> " + ex);
-                title = ex.Message;
-            }
-            finally
-            {
-                TitleBox.Text = title;
-
-                PartnersPanel.Children.Clear();
-
-                if (partnerList?.Data != null)
-                {
-
-                    foreach (Partner partner in partnerList.Data)
-                    {
-                        Border border = new Border
-                        {
-                            Tag = partner.WebAddress,
-                            Margin = new Thickness(20, 0, 0, 0),
-                            VerticalAlignment = VerticalAlignment.Top
-                        };
-                        border.PointerPressed += MenuItemClick;
-
-                        try
-                        {
-                            BitmapImage? logoImg = (BitmapImage?)(object)new BitmapImage(new Uri(
-                                this.App().CurrentDirectory + "PartnerPage" + Path.DirectorySeparatorChar + partner.Logo));
-                            border.Background = new ImageBrush { ImageSource = logoImg };
-                        }
-                        catch { }
-
-
-                        border.Width = 127;
-                        border.Height = 127;
-
-                        border.Child = new TextBlock
-                        {
-                            Height = 40,
-                            FontSize = 14,
-                            Text = partner.Name,
-                            TextWrapping = TextWrapping.Wrap,
-                            TextAlignment = TextAlignment.Center,
-                            Margin = new Thickness(0, 0, 0, -45),
-                            FontFamily = new FontFamily("Montserrat"),
-                            VerticalAlignment = VerticalAlignment.Bottom,
-                            HorizontalAlignment = HorizontalAlignment.Center
-                        };
-
-                        PartnersPanel.Children.Add(border);
-                    }
-                }
             }
         }
 

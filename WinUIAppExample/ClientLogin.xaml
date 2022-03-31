@@ -33,12 +33,12 @@
                          MaxLength="60"
                          Text="Gerege"
                          VerticalContentAlignment="Center"
-                         Margin="10" Height="24"/>
+                         Margin="10" Height="32"/>
                 <PasswordBox x:Name="Password"
                              Password="mongol"
                              MaxLength="60"
                              VerticalContentAlignment="Center"
-                             Margin="10" Height="24"/>
+                             Margin="10" Height="32"/>
                 <TextBlock x:Name="errorTextBlock" 
                            Margin="10"
                            FontSize="10"

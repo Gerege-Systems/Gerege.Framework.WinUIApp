@@ -3,8 +3,6 @@ using Microsoft.UI.Xaml;
 
 using Gerege.Framework.WinUIApp;
 using Gerege.Framework.HttpClient;
-using Gerege.Framework.Logger;
-using Gerege.Framework.FileSystem;
 
 namespace SampleApp
 {
@@ -76,7 +74,7 @@ namespace SampleApp
         {
             try
             {
-                CacheFile tempCache = new(0, new { tmp = 0 });
+                GeregeCache tempCache = new(0, new { tmp = 0 });
                 if (string.IsNullOrEmpty(tempCache.FilePath)) return;
 
                 FileInfo cacheFI = new(tempCache.FilePath);

@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Diagnostics;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+
+using Newtonsoft.Json;
+
+using SampleApp;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,9 +17,53 @@ namespace WinUIAppExample
     /// </summary>
     public sealed partial class HomePage : Page
     {
+        public struct Welcome
+        {
+            public static int GeregeMessage() => 101;
+
+            [JsonProperty("title", Required = Required.Always)]
+            public string Title { get; set; }
+        }
+
         public HomePage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var MyApp = this.App();
+                Page partners = (Page)MyApp.LoadModule(
+                    MyApp.CurrentDirectory + "SampleModule.dll",
+                    new { conclusion = "Loading module is easy and peasy" });
+
+                MyApp.RaiseEvent("load-page", partners);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("SampleModule.dll-ийг ачаалах үед алдаа гарлаа -> " + ex.Message);
+                ((Button)sender).Content = ex.Message;
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Welcome t = this.UserCacheRequest<Welcome>();
+                TitleBox.Text = t.Title;
+            }
+            catch (Exception ex)
+            {
+                TitleBox.Text = ex.Message;
+                Debug.WriteLine("Welcome-ийг авах үед алдаа гарлаа -> " + ex.Message);
+            }
+            finally
+            {
+                LoadModuleBtn.Visibility = Visibility.Visible;
+            }
         }
     }
 }

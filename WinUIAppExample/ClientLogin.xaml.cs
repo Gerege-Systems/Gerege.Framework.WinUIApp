@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
@@ -18,38 +16,31 @@ namespace WinUIAppExample
     {
         public ClientLogin()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
-            string user = Username.Text;
-            string pass = Password.Password;
-
-            LoginBtn.IsEnabled = false;
-
-            new Thread(() => ProceedUserLogin(user, pass)).Start();
-        }
-
-        private void ProceedUserLogin(string username, string password)
-        {
-            string? status = null;
             try
             {
-                this.App().UserClient.Login(new { username, password });
-                status = "Login success!";
+                LoginBtn.IsEnabled = false;
+                Username.IsEnabled = false;
+                Password.IsEnabled = false;
+
+                string username = Username.Text;
+                string password = Password.Password;
+                this.App().UserClient.Login(new { username, password});
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
-                status = ex.Message;
+                errorTextBlock.Text = ex.Message;
             }
             finally
             {
-                errorTextBlock.Text = status;
                 LoginBtn.IsEnabled = true;
+                Username.IsEnabled = true;
+                Password.IsEnabled = true;
             }
         }
-
     }
 }
