@@ -7,7 +7,7 @@ using Gerege.Framework.HttpClient;
 namespace SampleApp
 {
     /// <summary>
-    /// GeregeApplication-аас удамшсан SampleApp апп объект.
+    /// GeregeWinUIApp-аас удамшсан SampleApp апп объект.
     /// </summary>
     public class SampleApp : GeregeWinUIApp
     {
