@@ -55,6 +55,8 @@ namespace SampleModule.PartnerPage
                 PartnersPanel.Children.Clear();
 
                 PartnerList list = this.UserRequest<PartnerList>();
+                TitleBox.Text = "Successfully retrieved partners list.";
+
                 foreach (Partner partner in list.Data)
                 {
                     Border border = new Border
@@ -92,8 +94,6 @@ namespace SampleModule.PartnerPage
 
                     PartnersPanel.Children.Add(border);
                 }
-
-                TitleBox.Text = "Successfully retrieved partners list.";
             }
             catch (Exception ex)
             {

@@ -47,8 +47,8 @@ namespace WinUIAppExample
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("SampleModule.dll-ийг ачаалах үед алдаа гарлаа -> " + ex.Message);
                 ((Button)sender).Content = ex.Message;
+                Debug.WriteLine("SampleModule.dll-ийг ачаалах үед алдаа гарлаа -> " + ex.Message);
             }
         }
 
