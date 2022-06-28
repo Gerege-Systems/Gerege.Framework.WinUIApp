@@ -1,62 +1,64 @@
-﻿using System;
-using System.Net.Http;
+﻿namespace SampleApp;
 
+/////// date: 2022.02.09 //////////
+///// author: Narankhuu ///////////
+//// contact: codesaur@gmail.com //
+
+using System;
+using System.Net.Http;
 using Gerege.Framework.HttpClient;
 
-namespace SampleApp
+/// <inheritdoc />
+public class SampleUserClient : GeregeClient
 {
     /// <inheritdoc />
-    public class SampleUserClient : GeregeClient
+    public class SampleToken : GeregeToken
     {
-        /// <inheritdoc />
-        public class SampleToken : GeregeToken
-        {
-            /// <summary>
-            /// Гэрэгэ токен авах мсж дугаар.
-            /// </summary>
-            public virtual int GeregeMessage() => 1;
-        }
-
-        /// <inheritdoc />
-        public SampleUserClient(HttpMessageHandler handler) : base(handler)
-        {
-            BaseAddress = new Uri(this.AppRaiseEvent("get-server-address"));
-        }
-
         /// <summary>
-        /// Терминал нэвтрэх.
+        /// Гэрэгэ токен авах мсж дугаар.
         /// </summary>
-        /// <param name="payload">Нэвтрэх мэдээлэл.</param>
-        public void Login(dynamic payload)
+        public virtual int GeregeMessage() => 1;
+    }
+
+    /// <inheritdoc />
+    public SampleUserClient(HttpMessageHandler handler) : base(handler)
+    {
+        BaseAddress = new Uri(this.AppRaiseEvent("get-server-address"));
+    }
+
+    /// <summary>
+    /// Терминал нэвтрэх.
+    /// </summary>
+    /// <param name="payload">Нэвтрэх мэдээлэл.</param>
+    public void Login(dynamic payload)
+    {
+        GeregeToken? token = FetchToken(payload);
+
+        if (string.IsNullOrEmpty(token?.Value))
+            throw new Exception("Invalid token data!");
+
+        this.AppRaiseEvent("client-login");
+    }
+
+    GeregeToken? currentToken = null;
+    dynamic? fetchTokenPayload = null;
+
+    /// <inheritdoc />
+    protected override GeregeToken? FetchToken(dynamic? payload = null)
+    {
+        if (payload != null)
+            fetchTokenPayload = payload;
+
+        if (currentToken != null
+            && currentToken.IsExpiring)
         {
-            GeregeToken? token = FetchToken(payload);
-
-            if (string.IsNullOrEmpty(token?.Value))
-                throw new Exception("Invalid token data!");
-
-            this.AppRaiseEvent("client-login");
+            currentToken = null;
+            payload = fetchTokenPayload;
         }
 
-        GeregeToken? currentToken = null;
-        dynamic? fetchTokenPayload = null;
+        if (payload != null)
+            currentToken = Request<SampleToken>(payload);
 
-        /// <inheritdoc />
-        protected override GeregeToken? FetchToken(dynamic? payload = null)
-        {
-            if (payload != null)
-                fetchTokenPayload = payload;
-
-            if (currentToken != null
-                && currentToken.IsExpiring)
-            {
-                currentToken = null;
-                payload = fetchTokenPayload;
-            }
-
-            if (payload != null)
-                currentToken = Request<SampleToken>(payload);
-
-            return currentToken;
-        }
+        return currentToken;
     }
 }

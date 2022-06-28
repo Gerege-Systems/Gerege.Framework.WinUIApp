@@ -2,9 +2,11 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows10.0.19041.0</TargetFramework>
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <UseWinUI>true</UseWinUI>
     <RootNamespace>Gerege.Framework.WinUIApp</RootNamespace>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
-    <UseWinUI>true</UseWinUI>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Version>5.0.1</Version>
@@ -18,7 +20,6 @@
     <Authors>Гэрэгэ Системс ХХК</Authors>
     <Description>Gerege Application Development Framework - WinUI Application library</Description>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.1" />
+      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
