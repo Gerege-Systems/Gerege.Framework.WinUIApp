@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "ApplicationExamples (Package)": {
+    "WinUIAppExample (Package)": {
       "commandName": "MsixPackage"
     },
-    "ApplicationExamples (Unpackaged)": {
+    "WinUIAppExample (Unpackaged)": {
       "commandName": "Project"
     }
   }

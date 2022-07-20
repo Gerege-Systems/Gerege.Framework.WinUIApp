@@ -9,7 +9,7 @@
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>5.0.1</Version>
+    <Version>6.0.0-preview</Version>
     <Copyright>Gerege Systems LLC</Copyright>
     <PackageProjectUrl>https://github.com/Gerege-Systems/Gerege.Framework.WinUIApp</PackageProjectUrl>
     <PackageIcon>gerege-icon.png</PackageIcon>
@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.1" />
+      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.2" />
   </ItemGroup>
 
   <ItemGroup>

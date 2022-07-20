@@ -1,13 +1,13 @@
-﻿namespace SampleApp;
+﻿using System;
+using System.Diagnostics;
+using System.Collections.Generic;
+using Gerege.Framework.Logger;
 
 /////// date: 2022.01.29 //////////
 ///// author: Narankhuu ///////////
 //// contact: codesaur@gmail.com //
 
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using Gerege.Framework.Logger;
+namespace SampleApp;
 
 /// <summary>
 /// Хөгжүүлэлтийн орчинд Debug горимтой үед Output консол дээр лог харуулах обьект.

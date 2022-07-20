@@ -1,11 +1,11 @@
-﻿/////// date: 2022.02.09 //////////
-///// author: Narankhuu ///////////
-//// contact: codesaur@gmail.com //
-
-using System;
+﻿using System;
 using System.Diagnostics;
 using Microsoft.UI.Xaml;
 using SampleModule.PartnerPage;
+
+/////// date: 2022.02.09 //////////
+///// author: Narankhuu ///////////
+//// contact: codesaur@gmail.com //
 
 /// <summary>
 /// Модуль үйлчилгээний эх класс.

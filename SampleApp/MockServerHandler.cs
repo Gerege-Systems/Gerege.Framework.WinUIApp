@@ -1,10 +1,4 @@
-﻿namespace SampleApp;
-
-/////// date: 2022.02.09 //////////
-///// author: Narankhuu ///////////
-//// contact: codesaur@gmail.com //
-
-using System;
+﻿using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -12,6 +6,12 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+
+/////// date: 2022.02.09 //////////
+///// author: Narankhuu ///////////
+//// contact: codesaur@gmail.com //
+
+namespace SampleApp;
 
 /// <summary>
 /// Туршилтын зорилгоор ашиглах хуурамч сервер хандалт.
@@ -40,9 +40,10 @@ public sealed class MockServerHandler : HttpMessageHandler
             string? token = request.Headers.Authorization?.ToString();
 
             Task<string>? input = request.Content?.ReadAsStringAsync(cancellationToken);
-            dynamic? payload = JsonConvert.DeserializeObject(input?.Result!);
+            if (input is null)
+                throw new("Invalid input!");
 
-            return HandleMessages(message_code, payload, token);
+            return HandleMessages(message_code, JsonConvert.DeserializeObject(input.Result), token);
         }
         catch (Exception ex)
         {

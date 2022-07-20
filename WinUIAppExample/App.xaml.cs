@@ -1,10 +1,10 @@
-﻿namespace WinUIAppExample;
+﻿using Microsoft.UI.Xaml;
 
 /////// date: 2022.01.22 //////////
 ///// author: Narankhuu ///////////
 //// contact: codesaur@gmail.com //
 
-using Microsoft.UI.Xaml;
+namespace WinUIAppExample;
 
 public partial class App : SampleApp.SampleApp
 {

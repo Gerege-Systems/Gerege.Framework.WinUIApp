@@ -1,16 +1,16 @@
-﻿namespace SampleApp;
-
-/////// date: 2022.02.09 //////////
-///// author: Narankhuu ///////////
-//// contact: codesaur@gmail.com //
-
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
 using Microsoft.UI.Xaml;
 using Gerege.Framework.WinUIApp;
 using Gerege.Framework.HttpClient;
+
+/////// date: 2022.02.09 //////////
+///// author: Narankhuu ///////////
+//// contact: codesaur@gmail.com //
+
+namespace SampleApp;
 
 /// <summary>
 /// GeregeWinUIApp-аас удамшсан SampleApp апп объект.

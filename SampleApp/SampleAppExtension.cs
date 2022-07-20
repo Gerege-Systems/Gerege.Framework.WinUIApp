@@ -1,15 +1,12 @@
-﻿#pragma warning disable IDE0060
-#pragma warning disable CS8603
-
-namespace SampleApp;
+﻿using System;
+using System.Net.Http;
+using Microsoft.UI.Xaml;
 
 /////// date: 2022.02.09 //////////
 ///// author: Narankhuu ///////////
 //// contact: codesaur@gmail.com //
 
-using System;
-using System.Net.Http;
-using Microsoft.UI.Xaml;
+namespace SampleApp;
 
 /// <summary>
 /// Гэрэгэ логикоор ажиллах програм хангамжын үндсэн суурь аппын өргөтгөл.
@@ -18,6 +15,8 @@ using Microsoft.UI.Xaml;
 /// одоо идэвхитэй ачаалагдсан Гэрэгэ апп объектыг дуудан ашиглах боломжтой болгоно.
 /// </para>
 /// </summary>
+#pragma warning disable IDE0060
+#pragma warning disable CS8603
 public static class SampleAppExtension
 {
     /// <summary>

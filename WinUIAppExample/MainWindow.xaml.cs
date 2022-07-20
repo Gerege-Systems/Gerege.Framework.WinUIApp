@@ -1,14 +1,14 @@
-﻿namespace WinUIAppExample;
+﻿using System;
+using System.Diagnostics;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using SampleApp;
 
 /////// date: 2022.02.09 //////////
 ///// author: Narankhuu ///////////
 //// contact: codesaur@gmail.com //
 
-using System;
-using System.Diagnostics;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using SampleApp;
+namespace WinUIAppExample;
 
 /// <summary>
 /// An empty window that can be used on its own or navigated to within a Frame.

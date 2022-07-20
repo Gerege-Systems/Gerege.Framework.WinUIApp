@@ -1,10 +1,4 @@
-﻿namespace Gerege.Framework.WinUIApp;
-
-/////// date: 2022.01.22 //////////
-///// author: Narankhuu ///////////
-//// contact: codesaur@gmail.com //
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Diagnostics;
@@ -12,6 +6,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.AppLifecycle;
+
+/////// date: 2022.01.22 //////////
+///// author: Narankhuu ///////////
+//// contact: codesaur@gmail.com //
+
+namespace Gerege.Framework.WinUIApp;
 
 /// <summary>
 /// Гэрэгэ логикоор ажиллах програм хангамжын үндсэн суурь апп хийсвэр класс.

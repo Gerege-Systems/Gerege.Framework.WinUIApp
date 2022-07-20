@@ -1,12 +1,12 @@
-﻿namespace SampleApp;
+﻿using System;
+using System.Net.Http;
+using Gerege.Framework.HttpClient;
 
 /////// date: 2022.02.09 //////////
 ///// author: Narankhuu ///////////
 //// contact: codesaur@gmail.com //
 
-using System;
-using System.Net.Http;
-using Gerege.Framework.HttpClient;
+namespace SampleApp;
 
 /// <inheritdoc />
 public class SampleUserClient : GeregeClient
