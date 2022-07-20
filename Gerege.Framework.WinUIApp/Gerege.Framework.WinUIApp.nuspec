@@ -10,7 +10,7 @@
 		<icon>gerege-icon.png</icon>
 		<description>$description$</description>
 		<copyright>$copyright$</copyright>
-		<tags>gerege;framework;winui;uwp;xaml;application</tags>
+		<tags>gerege;winui;uwp;application</tags>
 		<dependencies>
 			<dependency id="Microsoft.WindowsAppSDK" version="1.1.2" />
 		</dependencies>
