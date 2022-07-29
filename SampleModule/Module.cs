@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Microsoft.UI.Xaml;
 using SampleModule.PartnerPage;
 
 /////// date: 2022.02.09 //////////
@@ -26,7 +25,7 @@ public class Module
     /// <returns>
     /// Гэрэгийн томоохон харилцагчдын мэдээлэл агуулах хуудас.
     /// </returns>
-    public FrameworkElement Start(dynamic param)
+    public object? Start(dynamic param)
     {
         string log = Convert.ToString(param);
         Debug.WriteLine("Param -> " + log);
