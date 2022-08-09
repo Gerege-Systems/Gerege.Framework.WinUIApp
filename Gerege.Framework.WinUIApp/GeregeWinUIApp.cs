@@ -25,7 +25,7 @@ public abstract class GeregeWinUIApp : Application
     /// <param name="name">Гэрэгэ үзэгдэл нэр.</param>
     /// <param name="args">Үзэгдэлд дамжуулах өгөгдөл параметр.</param>
     /// <returns>Үзэгдэл хүлээн авагчаас үр дүн эсвэл null буцаана.</returns>
-    public delegate dynamic? GeregeEventHandler(string name, dynamic? args = null);
+    public delegate dynamic? GeregeEventHandler(string name, object? args = null);
 
     /// <summary>Gerege үзэгдэл хүлээн авагч.</summary>
     public event GeregeEventHandler? EventHandler;
@@ -50,7 +50,7 @@ public abstract class GeregeWinUIApp : Application
     /// Ямар нэгэн алдаа гарч Exception үүссэн бол үзэгдлийн үр дүнд алдааны мэдээллийг олгоно.
     /// <para>Үзэгдэл хүлээн авагчаас үр дүн null байх боломжтой.</para>
     /// </returns>
-    public virtual dynamic? RaiseEvent(string name, dynamic? args = null)
+    public virtual dynamic? RaiseEvent(string name, object? args = null)
     {
         // боломжит үзэгдэл хүлээн авагчдийг цуглуулж байна
         Delegate[]? delegates = EventHandler?.GetInvocationList();
@@ -59,7 +59,7 @@ public abstract class GeregeWinUIApp : Application
         if (delegates == null) return null;
 
         // хүлээн авагчидаас боловсруулсан үр дүнг энэ жагсаалтад бүртгэе
-        List<dynamic> results = new();
+        List<dynamic?> results = new();
 
         // үзэгдэл хүлээн авагч бүрийг ажиллуулж байна
         foreach (Delegate d in delegates)

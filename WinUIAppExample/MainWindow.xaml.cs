@@ -31,7 +31,7 @@ public sealed partial class MainWindow : Window
     /// <returns>
     /// Үзэгдэл хүлээн авагчтай бол боловсруулсан үр дүнг dynamic төрлөөр буцаана, үгүй бол null утга буцна.
     /// </returns>
-    public dynamic? GeregEventHandler(string @event, dynamic? param = null)
+    public dynamic? GeregEventHandler(string @event, object? param = null)
     {
         Debug.WriteLine("Gerege үзэгдэл дуудагдаж байна => " + @event);
 
@@ -81,12 +81,15 @@ public sealed partial class MainWindow : Window
     /// Модулиас уншсан Page рүү шилжих.
     /// </summary>
     /// <param name="param">Page обьект.</param>
-    public dynamic? OnLoadPage(dynamic param)
+    public dynamic? OnLoadPage(object? param)
     {
         try
         {
+            if (param is null || param is not Page)
+                throw new("Invalid page object!");
+
             MainGrid.Children.Clear();
-            MainGrid.Children.Add((Page)param);
+            MainGrid.Children.Add(param as Page);
         }
         catch (Exception ex)
         {

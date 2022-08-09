@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-      <PackageReference Include="Gerege.Framework.HttpClient" Version="6.0.0" />
-      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.2" />
+      <PackageReference Include="Gerege.Framework.HttpClient" Version="6.1.0" />
+      <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.3" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 

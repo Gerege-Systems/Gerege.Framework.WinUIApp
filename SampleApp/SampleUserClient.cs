@@ -30,7 +30,7 @@ public class SampleUserClient : GeregeClient
     /// Терминал нэвтрэх.
     /// </summary>
     /// <param name="payload">Нэвтрэх мэдээлэл.</param>
-    public void Login(dynamic payload)
+    public void Login(object payload)
     {
         GeregeToken? token = FetchToken(payload);
 
@@ -41,10 +41,10 @@ public class SampleUserClient : GeregeClient
     }
 
     GeregeToken? currentToken = null;
-    dynamic? fetchTokenPayload = null;
+    object? fetchTokenPayload = null;
 
     /// <inheritdoc />
-    protected override GeregeToken? FetchToken(dynamic? payload = null)
+    protected override GeregeToken? FetchToken(object? payload = null)
     {
         if (payload != null)
             fetchTokenPayload = payload;

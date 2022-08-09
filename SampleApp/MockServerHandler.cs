@@ -58,7 +58,7 @@ public sealed class MockServerHandler : HttpMessageHandler
         }
     }
 
-    private Task<HttpResponseMessage> Respond(dynamic content, HttpStatusCode StatusCode = HttpStatusCode.OK)
+    private Task<HttpResponseMessage> Respond(object content, HttpStatusCode StatusCode = HttpStatusCode.OK)
     {
         return Task.FromResult(new HttpResponseMessage()
         {
@@ -67,7 +67,7 @@ public sealed class MockServerHandler : HttpMessageHandler
         });
     }
 
-    private Task<HttpResponseMessage> HandleMessages(int message_code, dynamic? payload, string? token = null)
+    private Task<HttpResponseMessage> HandleMessages(int message_code, object? payload, string? token = null)
     {
         if (message_code == 1)
             return UserLogin(payload);
