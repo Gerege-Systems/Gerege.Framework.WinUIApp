@@ -9,7 +9,7 @@
     <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Version>6.1.0</Version>
+    <Version>8.0.0</Version>
     <Copyright>Gerege Systems LLC</Copyright>
     <PackageProjectUrl>https://github.com/Gerege-Systems/Gerege.Framework.WinUIApp</PackageProjectUrl>
     <PackageIcon>gerege-icon.png</PackageIcon>
@@ -20,6 +20,7 @@
     <Authors>Гэрэгэ Системс ХХК</Authors>
     <Description>Gerege Application Development Framework - WinUI Application library</Description>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.4.230913002" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
   </ItemGroup>
 
   <ItemGroup>

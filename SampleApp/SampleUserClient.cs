@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+
 using Gerege.Framework.HttpClient;
 
 /////// date: 2022.02.09 //////////
@@ -12,18 +13,9 @@ namespace SampleApp;
 public class SampleUserClient : GeregeClient
 {
     /// <inheritdoc />
-    public class SampleToken : GeregeToken
-    {
-        /// <summary>
-        /// Гэрэгэ токен авах мсж дугаар.
-        /// </summary>
-        public virtual int GeregeMessage() => 1;
-    }
-
-    /// <inheritdoc />
     public SampleUserClient(HttpMessageHandler handler) : base(handler)
     {
-        BaseAddress = new Uri(this.AppRaiseEvent("get-server-address"));
+        BaseAddress = new Uri((string)this.AppRaiseEvent("get-server-address")!);
     }
 
     /// <summary>
@@ -57,7 +49,7 @@ public class SampleUserClient : GeregeClient
         }
 
         if (payload != null)
-            currentToken = Request<SampleToken>(payload);
+            currentToken = Request<GeregeToken>(payload);
 
         return currentToken;
     }

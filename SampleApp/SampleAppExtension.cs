@@ -56,10 +56,10 @@ public static class SampleAppExtension
     /// <param name="name">Идэвхжүүлэх үзэгдэл нэр.</param>
     /// <param name="args">Үзэгдэлд дамжуулагдах өгөгдөл.</param>
     /// <returns>
-    /// Үзэгдэл хүлээн авагчаас үр дүн ирвэл dynamic төрлөөр буцаана, үгүй бол null утга буцаана.
+    /// Үзэгдэл хүлээн авагчаас үр дүн ирвэл object төрлөөр буцаана, үгүй бол null утга буцаана.
     /// <para>Үзэгдэл хүлээн авагчаас үр дүн null буцаасан байх боломжтой.</para>
     /// </returns>
-    public static dynamic? AppRaiseEvent(this object a, string name, object? args = null)
+    public static object? AppRaiseEvent(this object a, string name, object? args = null)
     {
         return a.App().RaiseEvent(name, args);
     }

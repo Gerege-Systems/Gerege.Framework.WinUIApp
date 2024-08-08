@@ -3,9 +3,9 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 /////// date: 2022.02.09 //////////
 ///// author: Narankhuu ///////////
@@ -28,22 +28,62 @@ public sealed class MockServerHandler : HttpMessageHandler
         {
             Thread.Sleep(500); // Интернетээр хандаж буй мэт сэтгэгдэл төрүүлэх үүднээс хором хүлээлгэе
 
-            string? requestTarget = request.RequestUri?.ToString();
-            if (requestTarget != this.AppRaiseEvent("get-server-address"))
-                throw new Exception("Unknown route pattern [" + requestTarget + "]");
-
-            string message_code_header = string.Join("", request.Headers.GetValues("message_code"));
-            if (string.IsNullOrEmpty(message_code_header)
-                || request.Method != HttpMethod.Post) throw new Exception("Invalid request");
-
-            int message_code = Convert.ToInt32(message_code_header);
             string? token = request.Headers.Authorization?.ToString();
+            if (token != $"Bearer {tokenValue}")
+                throw new Exception("Unauthorized access!");
 
-            Task<string>? input = request.Content?.ReadAsStringAsync(cancellationToken);
-            if (input is null)
-                throw new("Invalid input!");
+            string? path = request.RequestUri?.AbsolutePath;
 
-            return HandleMessages(message_code, JsonConvert.DeserializeObject(input.Result), token);
+            if (request.Method == HttpMethod.Post
+                && path == "/user/login")
+            {
+                Task<string>? input = request.Content?.ReadAsStringAsync(cancellationToken);
+                var payload = JsonSerializer.Deserialize<JsonElement>(input?.Result ?? "{}");
+                if (!payload.TryGetProperty("username", out JsonElement username)
+                    || payload.TryGetProperty("password", out JsonElement password))
+                    throw new Exception("Please provide login information!");
+
+                if (username.ToString() != "Gerege"
+                    || password.ToString() != "mongol")
+                    throw new Exception("Invalid user login!");
+
+                return Respond(new
+                {
+                    code = 200,
+                    status = "success",
+                    message = "fetching user token",
+                    result = new
+                    {
+                        token = tokenValue,
+                        expires_in = 300,
+                        expires = DateTime.Now.AddMinutes(5).ToString("yyyy-MM-dd H:mm:ss")
+                    }
+                });
+            }
+            else if(request.Method == HttpMethod.Get)
+                return path switch
+                {
+                    "/get/title" => Respond(new
+                    {
+                        code = 200,
+                        status = "success",
+                        message = "",
+                        result = new
+                        {
+                            title = "Welcome to Gerege Systems"
+                        }
+                    }),
+                    "/get/partners" => Respond(new
+                    {
+                        code = 200,
+                        status = "success",
+                        message = "",
+                        result = LoadEmbeddedJson("gerege_partners.json")
+                    }),
+                    _ => throw new Exception("Unknown route pattern")
+                };
+
+            throw new Exception("Not Found");
         }
         catch (Exception ex)
         {
@@ -63,80 +103,16 @@ public sealed class MockServerHandler : HttpMessageHandler
         return Task.FromResult(new HttpResponseMessage()
         {
             StatusCode = StatusCode,
-            Content = new StringContent(JsonConvert.SerializeObject(content))
+            Content = new StringContent(JsonSerializer.Serialize(content))
         });
     }
 
-    private Task<HttpResponseMessage> HandleMessages(int message_code, object? payload, string? token = null)
+    private object? LoadEmbeddedJson(string szFilePath)
     {
-        if (message_code == 1)
-            return UserLogin(payload);
-
-        if (token != "Bearer " + tokenValue)
-            throw new Exception("Unauthorized access!");
-
-        return message_code switch
-        {
-            101 => Respond(new
-            {
-                code = 200,
-                status = "success",
-                message = "",
-                result = new
-                {
-                    title = "Welcome to Gerege Systems"
-                }
-            }),
-            102 => Respond(new
-            {
-                code = 200,
-                status = "success",
-                message = "",
-                result = LoadEmbeddedJson("gerege_partners.json")
-            }),
-            _ => throw new Exception(message_code + ": Message code not found"),
-        };
-    }
-
-    private Task<HttpResponseMessage> UserLogin(dynamic? payload)
-    {
-        string username = Convert.ToString(payload?.username ?? "");
-        string password = Convert.ToString(payload?.password ?? "");
-
-        if (string.IsNullOrEmpty(username)
-            || string.IsNullOrEmpty(password))
-            throw new Exception("Please provide login information!");
-
-        if (username != "Gerege" || password != "mongol")
-            throw new Exception("Invalid user login!");
-
-        return Respond(new {
-            code = 200,
-            status = "success",
-            message = "fetching user token",
-            result = new {
-                token = tokenValue,
-                expires_in = 300,
-                expires = DateTime.Now.AddMinutes(5).ToString("yyyy-MM-dd H:mm:ss")
-            }
-        });
-    }
-
-    private dynamic? LoadEmbeddedJson(string szFilePath)
-    {
-        try
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            using var stream = assembly.GetManifestResourceStream(typeof(MockServerHandler).Namespace + "." + szFilePath);
-            if (stream == null)
-                throw new FileNotFoundException(assembly.GetName().Name + " дотор " + szFilePath + " гэсэн файл байхгүй л байна даа!");
-
-            using StreamReader reader = new StreamReader(stream);
-            return JsonConvert.DeserializeObject(reader.ReadToEnd());
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        var assembly = Assembly.GetExecutingAssembly();
+        using var stream = assembly.GetManifestResourceStream($"{typeof(MockServerHandler).Namespace}.{szFilePath}")
+            ?? throw new FileNotFoundException($"{assembly.GetName().Name} дотор {szFilePath} гэсэн файл байхгүй л байна даа!");
+        using StreamReader reader = new StreamReader(stream);
+        return JsonSerializer.Deserialize<object>(reader.ReadToEnd());
     }
 }

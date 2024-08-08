@@ -25,9 +25,9 @@ public class Module
     /// <returns>
     /// Гэрэгийн томоохон харилцагчдын мэдээлэл агуулах хуудас.
     /// </returns>
-    public object? Start(dynamic param)
+    public object? Start(object param)
     {
-        string log = Convert.ToString(param);
+        string? log = Convert.ToString(param);
         Debug.WriteLine("Param -> " + log);
 
         return new Partners();

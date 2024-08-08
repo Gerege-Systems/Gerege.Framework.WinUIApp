@@ -29,9 +29,9 @@ public sealed partial class MainWindow : Window
     /// <param name="event">Идэвхжсэн үзэгдэл.</param>
     /// <param name="param">Үзэгдэлд дамжуулагдсан өгөгдөл.</param>
     /// <returns>
-    /// Үзэгдэл хүлээн авагчтай бол боловсруулсан үр дүнг dynamic төрлөөр буцаана, үгүй бол null утга буцна.
+    /// Үзэгдэл хүлээн авагчтай бол боловсруулсан үр дүнг object төрлөөр буцаана, үгүй бол null утга буцна.
     /// </returns>
-    public dynamic? GeregEventHandler(string @event, object? param = null)
+    public object? GeregEventHandler(string @event, object? param = null)
     {
         Debug.WriteLine("Gerege үзэгдэл дуудагдаж байна => " + @event);
 
@@ -49,7 +49,7 @@ public sealed partial class MainWindow : Window
     /// <summary>
     /// Апп дээр үндсэн хэрэглэгч нэвтрэхийг шаардах үед энэ функц ажиллана.
     /// </summary>
-    public dynamic? OnTriggerClientLogin()
+    public object? OnTriggerClientLogin()
     {
         MainFrame.Navigate(typeof(ClientLogin));
 
@@ -59,7 +59,7 @@ public sealed partial class MainWindow : Window
     /// <summary>
     /// Апп дээр үндсэн хэрэглэгч амжилттай нэвтрэх үед энэ функц ажиллана.
     /// </summary>
-    public dynamic? OnClientLogin()
+    public object? OnClientLogin()
     {
         return this.AppRaiseEvent("load-home");
     }
@@ -67,7 +67,7 @@ public sealed partial class MainWindow : Window
     /// <summary>
     /// Нүүр хуудасруу шилжихийг хүсэх үед энэ функц ажиллана.
     /// </summary>
-    public dynamic? OnLoadHome()
+    public object? OnLoadHome()
     {
         MainGrid.Children.Clear();
         MainGrid.Children.Add(MainFrame);
@@ -81,7 +81,7 @@ public sealed partial class MainWindow : Window
     /// Модулиас уншсан Page рүү шилжих.
     /// </summary>
     /// <param name="param">Page обьект.</param>
-    public dynamic? OnLoadPage(object? param)
+    public object? OnLoadPage(object? param)
     {
         try
         {
