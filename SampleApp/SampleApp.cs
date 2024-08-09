@@ -68,7 +68,7 @@ public class SampleApp : GeregeWinUIApp
             "get-server-address" => "http://mock-server/",
             "get-token-address" => "http://mock-server/user/login",
 
-            _ => null,
+            _ => null
         };
     }
 
