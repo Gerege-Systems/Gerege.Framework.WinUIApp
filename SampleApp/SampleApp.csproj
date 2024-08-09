@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-      <PackageReference Include="Gerege.Framework.HttpClient" Version="8.0.0" />
+      <PackageReference Include="Gerege.Framework.HttpClient" Version="8.1.0" />
       <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240627000" />
   </ItemGroup>
 

@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
-
+using System.Text.Json;
 using Gerege.Framework.HttpClient;
 
 /////// date: 2022.02.09 //////////
@@ -19,14 +20,14 @@ public class SampleUserClient : GeregeClient
     }
 
     /// <summary>
-    /// Терминал нэвтрэх.
+    /// Хэрэглэгч нэвтрэх.
     /// </summary>
     /// <param name="payload">Нэвтрэх мэдээлэл.</param>
     public void Login(object payload)
     {
         GeregeToken? token = FetchToken(payload);
 
-        if (string.IsNullOrEmpty(token?.Value))
+        if (token is null || !token.IsValid)
             throw new Exception("Invalid token data!");
 
         this.AppRaiseEvent("client-login");
@@ -49,8 +50,14 @@ public class SampleUserClient : GeregeClient
         }
 
         if (payload != null)
-            currentToken = Request<GeregeToken>(payload);
-
+        {
+            JsonElement token = Request<JsonElement>(payload, HttpMethod.Post, Convert.ToString(this.AppRaiseEvent("get-token-address")));
+            if (token.TryGetProperty("token", out JsonElement tokenValue))
+            {
+                currentToken = new GeregeToken();
+                currentToken.Update(tokenValue.ToString());
+            }
+        }
         return currentToken;
     }
 }

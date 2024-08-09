@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Text.Json.Serialization;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Newtonsoft.Json;
+
 using SampleApp;
 
 /////// date: 2022.02.09 //////////
@@ -21,9 +24,8 @@ public sealed partial class HomePage : Page
 {
     public struct Welcome
     {
-        public int GeregeMessage() => 101;
-
-        [JsonProperty("title", Required = Required.Always)]
+        [JsonPropertyName("title")]
+        [JsonRequired]
         public string Title { get; set; }
     }
 
@@ -43,14 +45,14 @@ public sealed partial class HomePage : Page
                 new { conclusion = "Loading module is easy and peasy" });
 
             if (partners is not Page)
-                throw new Exception(dllName + ": Module.Start функц нь Page буцаасангүй!");
+                throw new Exception($"{dllName}: Module.Start функц нь Page буцаасангүй!");
 
             MyApp.RaiseEvent("load-page", partners);
         }
         catch (Exception ex)
         {
             ((Button)sender).Content = ex.Message;
-            Debug.WriteLine("SampleModule.dll-ийг ачаалах үед алдаа гарлаа -> " + ex.Message);
+            Debug.WriteLine($"SampleModule.dll-ийг ачаалах үед алдаа гарлаа -> {ex.Message}");
         }
     }
 
@@ -58,13 +60,13 @@ public sealed partial class HomePage : Page
     {
         try
         {
-            Welcome t = this.UserCacheRequest<Welcome>();
+            Welcome t = this.UserCacheRequest<Welcome>("http://mock-server/get/title", HttpMethod.Get);
             TitleBox.Text = t.Title;
         }
         catch (Exception ex)
         {
             TitleBox.Text = ex.Message;
-            Debug.WriteLine("Welcome-ийг авах үед алдаа гарлаа -> " + ex.Message);
+            Debug.WriteLine($"Welcome-ийг авах үед алдаа гарлаа -> {ex.Message}");
         }
         finally
         {

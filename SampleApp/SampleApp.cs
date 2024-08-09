@@ -2,7 +2,9 @@
 using System.IO;
 using System.Reflection;
 using System.Diagnostics;
+
 using Microsoft.UI.Xaml;
+
 using Gerege.Framework.WinUIApp;
 using Gerege.Framework.HttpClient;
 
@@ -64,6 +66,7 @@ public class SampleApp : GeregeWinUIApp
         return @event switch
         {
             "get-server-address" => "http://mock-server/",
+            "get-token-address" => "http://mock-server/user/login",
 
             _ => null,
         };
@@ -80,7 +83,7 @@ public class SampleApp : GeregeWinUIApp
     public object? ModuleStart(string filePath, object param)
     {
         if (string.IsNullOrEmpty(filePath)
-                || !File.Exists(filePath))
+            || !File.Exists(filePath))
             throw new Exception($"{filePath}: Модул зам олдсонгүй!");
 
         string dllName = Path.GetFileName(filePath);

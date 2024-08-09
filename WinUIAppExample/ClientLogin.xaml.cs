@@ -1,6 +1,8 @@
 ﻿using System;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+
 using SampleApp;
 
 /////// date: 2022.02.09 //////////

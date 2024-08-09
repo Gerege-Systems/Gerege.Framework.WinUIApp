@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text.Json.Serialization;
+
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Newtonsoft.Json;
+
 using SampleApp;
 
 /////// date: 2022.02.09 //////////
@@ -21,21 +23,23 @@ namespace SampleModule.PartnerPage;
 
 public class Partner
 {
-    [JsonProperty("name", Required = Required.Always)]
+    [JsonPropertyName("name")]
+    [JsonRequired]
     public string Name { get; set; }
 
-    [JsonProperty("logo", Required = Required.Always)]
+    [JsonPropertyName("logo")]
+    [JsonRequired]
     public string Logo { get; set; }
 
-    [JsonProperty("href", Required = Required.Always)]
+    [JsonPropertyName("href")]
+    [JsonRequired]
     public string WebAddress { get; set; }
 }
 
 public class PartnerList
 {
-    public virtual int GeregeMessage() => 102;
-
-    [JsonProperty("partners", Required = Required.Always)]
+    [JsonPropertyName("partners")]
+    [JsonRequired]
     public List<Partner> Data { get; set; }
 }
 
@@ -55,7 +59,7 @@ public sealed partial class Partners : Page
         {
             PartnersPanel.Children.Clear();
 
-            PartnerList list = this.UserRequest<PartnerList>();
+            PartnerList list = this.AppUserGet<PartnerList>("http://mock-server/get/partners");
             TitleBox.Text = "Successfully retrieved partners list.";
 
             foreach (Partner partner in list.Data)
@@ -99,7 +103,7 @@ public sealed partial class Partners : Page
         catch (Exception ex)
         {
             TitleBox.Text = ex.Message;
-            Debug.WriteLine("Error on fetching data -> " + ex);
+            Debug.WriteLine($"Error on fetching data -> {ex.Message}");
         }
     }
 

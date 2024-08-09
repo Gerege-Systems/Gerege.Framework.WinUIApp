@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+
 using SampleModule.PartnerPage;
 
 /////// date: 2022.02.09 //////////
@@ -28,7 +29,7 @@ public class Module
     public object? Start(object param)
     {
         string? log = Convert.ToString(param);
-        Debug.WriteLine("Param -> " + log);
+        Debug.WriteLine($"Param -> {log}");
 
         return new Partners();
     }

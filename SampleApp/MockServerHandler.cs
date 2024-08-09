@@ -6,6 +6,12 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Text;
+using Gerege.Framework.HttpClient;
 
 /////// date: 2022.02.09 //////////
 ///// author: Narankhuu ///////////
@@ -18,7 +24,20 @@ namespace SampleApp;
 /// </summary>
 public sealed class MockServerHandler : HttpMessageHandler
 {
-    private readonly string tokenValue = "GEREGE_SUPER_SECRET_TOKEN";
+    private string GenerateJwtToken()
+    {
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("THIS IS GEREGE CUSTOM SECRET KEY FOR AUTHENTICATION"));
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+        var token = new JwtSecurityToken(
+            issuer: "Gerege",
+            audience: "audience",
+            claims: [],
+            expires: DateTime.Now.AddDays(3),
+            signingCredentials: creds);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
+    }
 
     /// <inheritdoc />
     protected sealed override Task<HttpResponseMessage> SendAsync(
@@ -28,10 +47,6 @@ public sealed class MockServerHandler : HttpMessageHandler
         {
             Thread.Sleep(500); // Интернетээр хандаж буй мэт сэтгэгдэл төрүүлэх үүднээс хором хүлээлгэе
 
-            string? token = request.Headers.Authorization?.ToString();
-            if (token != $"Bearer {tokenValue}")
-                throw new Exception("Unauthorized access!");
-
             string? path = request.RequestUri?.AbsolutePath;
 
             if (request.Method == HttpMethod.Post
@@ -40,7 +55,7 @@ public sealed class MockServerHandler : HttpMessageHandler
                 Task<string>? input = request.Content?.ReadAsStringAsync(cancellationToken);
                 var payload = JsonSerializer.Deserialize<JsonElement>(input?.Result ?? "{}");
                 if (!payload.TryGetProperty("username", out JsonElement username)
-                    || payload.TryGetProperty("password", out JsonElement password))
+                    || !payload.TryGetProperty("password", out JsonElement password))
                     throw new Exception("Please provide login information!");
 
                 if (username.ToString() != "Gerege"
@@ -49,39 +64,28 @@ public sealed class MockServerHandler : HttpMessageHandler
 
                 return Respond(new
                 {
-                    code = 200,
-                    status = "success",
-                    message = "fetching user token",
-                    result = new
-                    {
-                        token = tokenValue,
-                        expires_in = 300,
-                        expires = DateTime.Now.AddMinutes(5).ToString("yyyy-MM-dd H:mm:ss")
-                    }
+                    token = GenerateJwtToken()
                 });
             }
-            else if(request.Method == HttpMethod.Get)
-                return path switch
-                {
-                    "/get/title" => Respond(new
+            else 
+            {
+                string? tokenValue = request.Headers.Authorization?.ToString().Substring(7);
+                GeregeToken token = new GeregeToken();
+                token.Update(tokenValue ?? "null");
+                if (!token.IsValid)
+                    throw new Exception("Unauthorized access!");
+
+                if (request.Method == HttpMethod.Get)
+                    return path switch
                     {
-                        code = 200,
-                        status = "success",
-                        message = "",
-                        result = new
+                        "/get/title" => Respond(new
                         {
                             title = "Welcome to Gerege Systems"
-                        }
-                    }),
-                    "/get/partners" => Respond(new
-                    {
-                        code = 200,
-                        status = "success",
-                        message = "",
-                        result = LoadEmbeddedJson("gerege_partners.json")
-                    }),
-                    _ => throw new Exception("Unknown route pattern")
-                };
+                        }),
+                        "/get/partners" => Respond(LoadEmbeddedJson("gerege_partners.json")),
+                        _ => throw new Exception("Unknown route pattern")
+                    };
+            }
 
             throw new Exception("Not Found");
         }
@@ -98,7 +102,7 @@ public sealed class MockServerHandler : HttpMessageHandler
         }
     }
 
-    private Task<HttpResponseMessage> Respond(object content, HttpStatusCode StatusCode = HttpStatusCode.OK)
+    private Task<HttpResponseMessage> Respond(object? content, HttpStatusCode StatusCode = HttpStatusCode.OK)
     {
         return Task.FromResult(new HttpResponseMessage()
         {

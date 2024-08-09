@@ -33,7 +33,7 @@ public sealed partial class MainWindow : Window
     /// </returns>
     public object? GeregEventHandler(string @event, object? param = null)
     {
-        Debug.WriteLine("Gerege үзэгдэл дуудагдаж байна => " + @event);
+        Debug.WriteLine($"Gerege үзэгдэл дуудагдаж байна => {@event}");
 
         return @event switch
         {
